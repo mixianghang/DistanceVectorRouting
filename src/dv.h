@@ -6,7 +6,7 @@
 *@email: mixianghang@outlook.com
 *@description: ---
 *Create: 2015-11-29 18:03:21
-# Last Modified: 2015-12-01 20:01:16
+# Last Modified: 2015-12-02 11:29:26
 ************************************************/
 
 #ifndef DV_H
@@ -28,8 +28,11 @@ typedef struct DvPanel {
   uint16_t port;
   uint16_t ttl;
   uint16_t period;
-  uint8_t isSH;//whether enabling split horizon
-  uint8_t isUpdated;//used by trigger to decide whether to send update msg to neighbors
+  //whether enabling split horizon
+  uint8_t isSH;
+  //used by trigger to decide whether 
+  //to send update msg to neighbors
+  uint8_t isUpdated;
   uint8_t nodeNum;
   uint8_t neighborNum;
   uint16_t infinity;

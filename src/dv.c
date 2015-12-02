@@ -6,7 +6,7 @@
 *@email: mixianghang@outlook.com
 *@description: ---
 *Create: 2015-11-29 18:03:31
-# Last Modified: 2015-12-01 17:12:48
+# Last Modified: 2015-12-02 12:30:20
 ************************************************/
 #include "dv.h"
 #include <string.h>
@@ -255,8 +255,9 @@ int sendUpdateToNeighbors(Panel * panel) {
 	//compose msg for each neighbor
 	uint32_t neighbor = panel->neighbor[i];
 	if (!checkReachability(panel, neighbor)) {
-	  printf("some neighbor is broken\n");
-	  i++;
+	  char ipBuffer[16] = {0};
+	  convertIp2Text(neighbor, ipBuffer);
+	  printf("some neighbor is broken: %s\n", ipBuffer);
 	  continue;
 	}
 	uint32_t msgLen = 0;
