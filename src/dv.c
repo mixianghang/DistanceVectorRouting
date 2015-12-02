@@ -6,7 +6,7 @@
 *@email: mixianghang@outlook.com
 *@description: ---
 *Create: 2015-11-29 18:03:31
-# Last Modified: 2015-12-01 16:10:15
+# Last Modified: 2015-12-01 16:39:11
 ************************************************/
 #include "dv.h"
 #include <string.h>
@@ -172,7 +172,7 @@ void initPanel(Panel * panel) {
 int processUpdateMsg(Panel * panel, unsigned char * buffer, int bufferLen, uint32_t fromIp) {
   char fromBuffer[16] = {0};
   convertIp2Text(fromIp, fromBuffer);
-  printf("recv update msg from %s:\n%s\n", fromBuffer, buffer);
+  printf("recv update msg from %s, %u with len %d\n", fromBuffer, fromIp, bufferLen);
   // find out cost to neighbor from IP
   uint32_t cost_neighbor = 0;
   int j = 0; 
@@ -308,7 +308,7 @@ int echoProfile(Panel * panel) {
 	char nextHopBuffer[16] = {0};
 	convertIp2Text(tempRecord->dest, destBuffer);
 	convertIp2Text(tempRecord->nextHop, nextHopBuffer);
-	printf("node: %s, nextHop : %s, cost: %u, ttl: %u\n", destBuffer, nextHopBuffer, tempRecord->cost, tempRecord->ttl);
+	printf("node: %s, %u, nextHop : %s, %u, cost: %u, ttl: %u\n", destBuffer, tempRecord->dest, nextHopBuffer,tempRecord->nextHop, tempRecord->cost, tempRecord->ttl);
   }
   return 0;
 }
