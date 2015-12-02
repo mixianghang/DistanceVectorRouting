@@ -6,7 +6,7 @@
 *@email: mixianghang@outlook.com
 *@description: ---
 *Create: 2015-11-29 18:03:31
-# Last Modified: 2015-12-01 17:03:25
+# Last Modified: 2015-12-01 17:12:48
 ************************************************/
 #include "dv.h"
 #include <string.h>
@@ -217,6 +217,9 @@ int processUpdateMsg(Panel * panel, unsigned char * buffer, int bufferLen, uint3
 		if (tempRecord->nextHop == fromIp) {
 		  if (tempRecord->cost < cost) {
 			tempRecord->cost = cost;
+			if (cost == panel->infinity) {
+			  tempRecord->nextHop = 0;
+			}
 			panel->isUpdated = 1;
 		  }
 		  tempRecord->ttl     = panel->ttl;//refresh ttl to default value
