@@ -6,7 +6,7 @@
 *@email: mixianghang@outlook.com
 *@description: ---
 *Create: 2015-11-29 18:03:31
-# Last Modified: 2015-12-02 12:30:20
+# Last Modified: 2015-12-02 12:41:54
 ************************************************/
 #include "dv.h"
 #include <string.h>
@@ -254,10 +254,10 @@ int sendUpdateToNeighbors(Panel * panel) {
   for (; i< neighborNum; i++) {
 	//compose msg for each neighbor
 	uint32_t neighbor = panel->neighbor[i];
+	char ipText[16] = {0};
+	convertIp2Text(neighbor, ipText);
 	if (!checkReachability(panel, neighbor)) {
-	  char ipBuffer[16] = {0};
-	  convertIp2Text(neighbor, ipBuffer);
-	  printf("some neighbor is broken: %s\n", ipBuffer);
+	  printf("some neighbor is broken: %s\n", ipText);
 	  continue;
 	}
 	uint32_t msgLen = 0;
@@ -271,8 +271,6 @@ int sendUpdateToNeighbors(Panel * panel) {
 	ng_addr.sin_family = AF_INET;
 	ng_addr.sin_port   = htons(panel->port);
 	ng_addr.sin_addr.s_addr   = neighbor;
-	char ipText[16] = {0};
-	convertIp2Text(neighbor, ipText);
 	int sentLen = 0;
 	int tempLen = 0;
 	while (sentLen < msgLen) {
