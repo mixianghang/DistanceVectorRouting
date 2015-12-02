@@ -6,7 +6,7 @@
 *@email: mixianghang@outlook.com
 *@description: ---
 *Create: 2015-11-29 18:03:31
-# Last Modified: 2015-12-01 20:25:10
+# Last Modified: 2015-12-01 16:10:15
 ************************************************/
 #include "dv.h"
 #include <string.h>
@@ -132,6 +132,7 @@ void * periodUpdate (void *panel_1) {
 //ttl check
 void * ttlCheck(void *panel_1) {
   Panel *panel = (Panel *)panel_1;
+  int count = 0;
   while (1) {
 	sleep(1);
 	int nodeNum = panel->nodeNum;
@@ -150,6 +151,12 @@ void * ttlCheck(void *panel_1) {
 	}
 	if (hasUpdate) {
 	  panel->isUpdated = 1;
+	}
+	count++;
+	if (count % 10 == 0) {
+	  printf("profile in ttlCheck for every 10 seconds\n");
+	  echoProfile(panel);
+	  count = 0;
 	}
   }
 }
@@ -243,7 +250,7 @@ int sendUpdateToNeighbors(Panel * panel) {
 	uint32_t msgLen = 0;
 	char buffer[4096] = {0};
 	msgLen = composeUpdateMsg(neighbor, panel, buffer, 4095);
-	printf("update msg is %s\n", buffer);
+	printf("composed update msg is %d length\n", msgLen);
 
 	//send msg for each neighbor
 	struct sockaddr_in ng_addr;
@@ -293,7 +300,7 @@ int convertIp2Text (uint32_t ip, char * buffer) {
 //echo profile of Panel
 int echoProfile(Panel * panel) {
   printf("current DV profile\n");
-  printf("nodes: %d, neighbors: %d\n", panel->nodeNum, panel->neighborNum);
+  printf("nodes: %d, neighbors: %d, infinity: %d, ttl: %d, period: %d\n", panel->nodeNum, panel->neighborNum, panel->infinity, panel->ttl, panel->period);
   int i = 0;
   for (;i < panel->nodeNum; i++) {
 	Record *tempRecord = &(panel->forwardTable[i]);

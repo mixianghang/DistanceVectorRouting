@@ -6,7 +6,7 @@
 *@email: mixianghang@outlook.com
 *@description: ---
 *Create: 2015-11-29 18:03:39
-# Last Modified: 2015-12-01 20:20:57
+# Last Modified: 2015-12-01 15:57:27
 ************************************************/
 #include <stdio.h> /*printf */
 #include <stdint.h>/*uint32_t .etc.*/
@@ -63,6 +63,7 @@ int main (int argc, char * argv[]) {
   dvPanel.ttl       = ttl;
   dvPanel.infinity  = infinity;
   dvPanel.isSH      = isSH;
+  dvPanel.period    = period;
   initPanel(&dvPanel);
 
   if (initFromConfig(&dvPanel, config) == 0) {
