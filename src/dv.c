@@ -6,7 +6,7 @@
 *@email: mixianghang@outlook.com
 *@description: ---
 *Create: 2015-11-29 18:03:31
-# Last Modified: 2015-12-01 16:44:09
+# Last Modified: 2015-12-01 20:25:10
 ************************************************/
 #include "dv.h"
 #include <string.h>
@@ -163,6 +163,9 @@ void initPanel(Panel * panel) {
 
 //process update msg
 int processUpdateMsg(Panel * panel, unsigned char * buffer, int bufferLen, uint32_t fromIp) {
+  char fromBuffer[16] = {0};
+  convertIp2Text(fromIp, fromBuffer);
+  printf("recv update msg from %s:\n%s\n", fromBuffer, buffer);
   // find out cost to neighbor from IP
   uint32_t cost_neighbor = 0;
   int j = 0; 
@@ -176,7 +179,8 @@ int processUpdateMsg(Panel * panel, unsigned char * buffer, int bufferLen, uint3
   }
 
   if (cost_neighbor == 0) {
-	printf("there must be some error\n");
+	printf("there must be some error with update msg from %s\n", fromBuffer);
+	echoProfile(panel);
 	return 1;
   }
   unsigned char * temp = buffer;
@@ -232,12 +236,14 @@ int sendUpdateToNeighbors(Panel * panel) {
 	//compose msg for each neighbor
 	uint32_t neighbor = panel->neighbor[i];
 	if (!checkReachability(panel, neighbor)) {
+	  printf("some neighbor is broken\n");
 	  i++;
 	  continue;
 	}
 	uint32_t msgLen = 0;
 	char buffer[4096] = {0};
-	msgLen = composeUpdateMsg(neighbor, panel, buffer, 4096);
+	msgLen = composeUpdateMsg(neighbor, panel, buffer, 4095);
+	printf("update msg is %s\n", buffer);
 
 	//send msg for each neighbor
 	struct sockaddr_in ng_addr;
@@ -245,18 +251,19 @@ int sendUpdateToNeighbors(Panel * panel) {
 	ng_addr.sin_family = AF_INET;
 	ng_addr.sin_port   = htons(panel->port);
 	ng_addr.sin_addr.s_addr   = neighbor;
+	char ipText[16] = {0};
+	convertIp2Text(neighbor, ipText);
 	int sentLen = 0;
 	int tempLen = 0;
 	while (sentLen < msgLen) {
 	  tempLen = sendto(panel->sockFd, buffer + sentLen, msgLen - sentLen, 0, (struct sockaddr *) &ng_addr, (socklen_t) addrLen);
 	  if (tempLen < 0) {
-		char ipText[16] = {0};
-		convertIp2Text(neighbor, ipText);
 		printf("sending out update msg failed for neighbor %s\n", ipText); 
 		return 1;
 	  }
 	  sentLen += tempLen;
 	}
+	printf("finish sending update msg for neighbor %s\n", ipText);
   }
   return 0;
 }
@@ -280,5 +287,21 @@ int checkReachability(Panel * panel, uint32_t ip) {
 //convert ipInt to text
 int convertIp2Text (uint32_t ip, char * buffer) {
   sprintf(buffer, "%u.%u.%u.%u", ip & 0xFF, (ip >> 8) & 0xFF, (ip >> 16) & 0xFF, (ip >> 24) & 0xFF);
+  return 0;
+}
+
+//echo profile of Panel
+int echoProfile(Panel * panel) {
+  printf("current DV profile\n");
+  printf("nodes: %d, neighbors: %d\n", panel->nodeNum, panel->neighborNum);
+  int i = 0;
+  for (;i < panel->nodeNum; i++) {
+	Record *tempRecord = &(panel->forwardTable[i]);
+	char destBuffer[16] = {0};
+	char nextHopBuffer[16] = {0};
+	convertIp2Text(tempRecord->dest, destBuffer);
+	convertIp2Text(tempRecord->nextHop, nextHopBuffer);
+	printf("node: %s, nextHop : %s, cost: %u, ttl: %u\n", destBuffer, nextHopBuffer, tempRecord->cost, tempRecord->ttl);
+  }
   return 0;
 }

@@ -6,7 +6,7 @@
 *@email: mixianghang@outlook.com
 *@description: ---
 *Create: 2015-11-29 18:03:21
-# Last Modified: 2015-12-01 16:41:55
+# Last Modified: 2015-12-01 20:01:16
 ************************************************/
 
 #ifndef DV_H
@@ -81,6 +81,9 @@ int triggerUpdateMsg(Panel * panel);
 
 //checkReachability
 int checkReachability(Panel * panel, uint32_t ip);
+
+//echo profile of Panel
+int echoProfile(Panel * panel);
 
 
 

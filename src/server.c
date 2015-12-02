@@ -6,21 +6,14 @@
 *@email: mixianghang@outlook.com
 *@description: ---
 *Create: 2015-11-29 18:03:39
-# Last Modified: 2015-12-01 16:33:50
+# Last Modified: 2015-12-01 20:20:57
 ************************************************/
 #include <stdio.h> /*printf */
 #include <stdint.h>/*uint32_t .etc.*/
 #include <stdlib.h>/* atoi*/
-//#include <unistd.h>
-//#include <errno.h>
-//#include <string.h>
-//#include <sys/types.h>
 #include <sys/socket.h>/* socket, AF_INET SOCK_DGRAM SOCK_STREAM*/
 #include <netinet/in.h>/* sockaddr_in INADDR_ANY*/
-//#include <netdb.h>
 #include <arpa/inet.h>/* htonl htons ntohl ntohs*/
-//#include <sys/wait.h>
-//#include <signal.h>
 #include <pthread.h>/*pthread_t pthread_create*/
 #include <unistd.h>
 #include "server.h"
@@ -74,6 +67,7 @@ int main (int argc, char * argv[]) {
 
   if (initFromConfig(&dvPanel, config) == 0) {
 	printf("initialize from config %s successfully\n", config);
+	echoProfile(&dvPanel);
   } else {
 	printf("failed to initialize from config %s\n", config);
 	return 1;

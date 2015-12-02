@@ -12,6 +12,7 @@ Panel	./dv.h	/^} Panel;$/;"	t	typeref:struct:DvPanel
 Record	./dv.h	/^} Record;$/;"	t	typeref:struct:ForwardRecord
 RouteNode	./dv.h	/^typedef struct RouteNode {$/;"	s
 checkFileExist	./dv.c	/^int checkFileExist(char * filePath) {$/;"	f
+checkReachability	./dv.c	/^int checkReachability(Panel * panel, uint32_t ip) {$/;"	f
 composeUpdateMsg	./dv.c	/^int composeUpdateMsg (uint32_t neighbor, Panel *panel, char *result, int maxBytes) {$/;"	f
 convertIp2Text	./dv.c	/^int convertIp2Text (uint32_t ip, char * buffer) {$/;"	f
 convertIpText	./server.c	/^int convertIpText ( char *ipText, uint8_t *result) {$/;"	f
@@ -24,18 +25,19 @@ initPanel	./dv.c	/^void initPanel(Panel * panel) {$/;"	f
 ip	./dv.h	/^  uint32_t ip;$/;"	m	struct:RouteNode
 isSH	./dv.h	/^  uint8_t isSH;\/\/whether enabling split horizon$/;"	m	struct:DvPanel
 isUpdated	./dv.h	/^  uint8_t isUpdated;\/\/used by trigger to decide whether to send update msg to neighbors$/;"	m	struct:DvPanel
-main	./dv.c	/^int main() {$/;"	f
 main	./server.c	/^int main (int argc, char * argv[]) {$/;"	f
+main1	./dv.c	/^int main1() {$/;"	f
 neighbor	./dv.h	/^  uint32_t   neighbor[256];$/;"	m	struct:DvPanel
 neighborNum	./dv.h	/^  uint8_t neighborNum;$/;"	m	struct:DvPanel
 nextHop	./dv.h	/^  uint32_t nextHop;\/\/ next hop$/;"	m	struct:ForwardRecord
 nodeNum	./dv.h	/^  uint8_t nodeNum;$/;"	m	struct:DvPanel
 period	./dv.h	/^  uint16_t period;$/;"	m	struct:DvPanel
-periodUpdate	./dv.c	/^void * periodUpdate (void *panel) {$/;"	f
+periodUpdate	./dv.c	/^void * periodUpdate (void *panel_1) {$/;"	f
 port	./dv.h	/^  uint16_t port;$/;"	m	struct:DvPanel
 processUpdateMsg	./dv.c	/^int processUpdateMsg(Panel * panel, unsigned char * buffer, int bufferLen, uint32_t fromIp) {$/;"	f
 sendUpdateToNeighbors	./dv.c	/^int sendUpdateToNeighbors(Panel * panel) {$/;"	f
 sockFd	./dv.h	/^  int     sockFd; \/\/ udp sock fd$/;"	m	struct:DvPanel
+triggerUpdateMsg	./dv.c	/^int triggerUpdateMsg(Panel * panel) {$/;"	f
 ttl	./dv.h	/^  uint16_t ttl;$/;"	m	struct:DvPanel
 ttl	./dv.h	/^  uint16_t ttl;$/;"	m	struct:ForwardRecord
-ttlCheck	./dv.c	/^void * ttlCheck(void *panel) {$/;"	f
+ttlCheck	./dv.c	/^void * ttlCheck(void *panel_1) {$/;"	f
